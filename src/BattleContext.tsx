@@ -7,7 +7,6 @@ import {
   submitPlayerReport as fbSubmitReport,
   setInstruction as fbSetInstruction,
   subscribeToRoom,
-  deleteRoom,
 } from './firebase';
 import { loadPlayers, getPlayerByKey } from './players';
 
@@ -108,7 +107,6 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
 
   const leaveBattle = useCallback(() => {
     if (roomCode && firebaseKey) fbLeaveRoom(roomCode, firebaseKey);
-    if (roomCode && role === 'master') deleteRoom(roomCode);
     setRoomCode(null);
     setFirebaseKey(null);
     setRole(null);
