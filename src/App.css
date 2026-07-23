@@ -445,7 +445,18 @@ body {
   flex-shrink: 0;
 }
 
-/* === Misc === */
+/* Score history chart (sparkline) */
+.card-chart {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #1a1a2e;
+}
+
+.score-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .hint { color: #555; font-size: 13px; margin-top: 8px; }
 .error { color: #f44336; padding: 10px; background: #2a1414; border-radius: 6px; margin-top: 12px; font-size: 14px; }
 .empty-state { color: #555; text-align: center; padding: 28px; font-style: italic; }

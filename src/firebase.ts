@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set, update, onValue, remove, serverTimestamp, get, child } from 'firebase/database';
-import type { BattleRoom, PlayerReport, MasterInstruction } from './types';
+import type { BattleRoom, PlayerReport, MasterInstruction, PlayerStatus } from './types';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -49,8 +49,35 @@ export async function joinRoom(
     round: 1,
     estimatedScore: 0,
     status: 'draw',
+    roundHistory: [],
   });
   return playerKey;
+}
+
+export async function submitPlayerReport(
+  code: string,
+  playerKey: string,
+  round: number,
+  score: number,
+  status: PlayerStatus
+): Promise<void> {
+  // Read current roundHistory
+  const snapshot = await get(ref(db, `battles/${code}/players/${playerKey}`));
+  const current = snapshot.val() || {};
+  const roundHistory: Array<{ round: number; score: number; status: string }> = current.roundHistory || [];
+  
+  // Replace entry for this round, keep others
+  const filtered = roundHistory.filter((r) => r.round !== round);
+  filtered.push({ round, score, status });
+  filtered.sort((a, b) => a.round - b.round);
+  
+  // Write back: current fields + history
+  await update(ref(db, `battles/${code}/players/${playerKey}`), {
+    round,
+    estimatedScore: score,
+    status,
+    roundHistory: filtered,
+  });
 }
 
 export async function updatePlayerReport(

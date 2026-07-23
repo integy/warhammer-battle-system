@@ -4,7 +4,7 @@ import {
   createRoom as fbCreateRoom,
   joinRoom as fbJoinRoom,
   leaveRoom as fbLeaveRoom,
-  updatePlayerReport as fbUpdateReport,
+  submitPlayerReport as fbSubmitReport,
   setInstruction as fbSetInstruction,
   subscribeToRoom,
   deleteRoom,
@@ -25,6 +25,7 @@ interface BattleContextType {
   reportScore: (score: number) => void;
   reportStatus: (status: string) => void;
   reportRound: (round: number) => void;
+  submitReport: (round: number, score: number, status: string) => void;
   sendInstruction: (instruction: MasterInstruction) => void;
   leaveBattle: () => void;
 }
@@ -83,20 +84,22 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
     setRole('player');
   }, [players]);
 
-  const reportScore = useCallback((score: number) => {
+  const submitReport = useCallback((round: number, score: number, status: string) => {
     if (!roomCode || !firebaseKey) return;
-    fbUpdateReport(roomCode, firebaseKey, { estimatedScore: score });
+    fbSubmitReport(roomCode, firebaseKey, round, score, status as any);
   }, [roomCode, firebaseKey]);
+
+  const reportScore = useCallback((score: number) => {
+    submitReport(1, score, 'draw'); // fallback, should use submitReport directly
+  }, [submitReport]);
 
   const reportStatus = useCallback((status: string) => {
-    if (!roomCode || !firebaseKey) return;
-    fbUpdateReport(roomCode, firebaseKey, { status: status as any });
-  }, [roomCode, firebaseKey]);
+    submitReport(1, 0, status); // fallback
+  }, [submitReport]);
 
   const reportRound = useCallback((round: number) => {
-    if (!roomCode || !firebaseKey) return;
-    fbUpdateReport(roomCode, firebaseKey, { round });
-  }, [roomCode, firebaseKey]);
+    submitReport(round, 0, 'draw'); // fallback
+  }, [submitReport]);
 
   const sendInstruction = useCallback((instruction: MasterInstruction) => {
     if (!roomCode) return;
@@ -117,7 +120,7 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
     <BattleContext.Provider value={{
       role, roomCode, firebaseKey, selectedPlayer, players, room,
       createBattle, joinAsMaster, joinBattle, selectPlayer,
-      reportScore, reportStatus, reportRound, sendInstruction, leaveBattle,
+      reportScore, reportStatus, reportRound, submitReport, sendInstruction, leaveBattle,
     }}>
       {children}
     </BattleContext.Provider>

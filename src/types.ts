@@ -39,12 +39,19 @@ export interface PlayerInfo {
   name: string;
 }
 
+export interface RoundData {
+  round: number;
+  score: number;
+  status: PlayerStatus;
+}
+
 export interface PlayerReport {
   playerKey: string;
   playerName: string;
   round: number;
   estimatedScore: number;
   status: PlayerStatus;
+  roundHistory?: RoundData[];
 }
 
 export interface BattleRoom {

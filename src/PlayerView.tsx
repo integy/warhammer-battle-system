@@ -5,8 +5,8 @@ import { STATUSES, STATUS_LABELS, INSTRUCTIONS, INSTRUCTION_LABELS } from './typ
 
 export function PlayerView() {
   const {
-    roomCode, selectedPlayer, reportScore, reportStatus,
-    reportRound, leaveBattle, room,
+    roomCode, selectedPlayer, submitReport,
+    leaveBattle, room,
   } = useBattle();
 
   // Local state — only sent to Firebase on CONFIRM
@@ -18,9 +18,7 @@ export function PlayerView() {
   const masterInstruction = room?.masterInstruction ?? null;
 
   const handleConfirm = () => {
-    reportRound(round);
-    reportScore(score);
-    reportStatus(status);
+    submitReport(round, score, status);
     setConfirmed(true);
     // Reset after 1.5s
     setTimeout(() => {
