@@ -277,10 +277,10 @@ export function MasterView() {
                   </div>
 
                   {/* Score history chart */}
-                  {history.length > 0 || p.estimatedScore > 0 ? (
+                  {(history && history.length > 0) || p.estimatedScore > 0 ? (
                     <div className="card-chart">
                       <ScoreHistoryChart
-                        history={history}
+                        history={history || []}
                         currentRound={p.round}
                         currentScore={p.estimatedScore}
                         currentStatus={p.status}
