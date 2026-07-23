@@ -4,30 +4,33 @@ import { STATUS_LABELS, STATUS_COLORS, INSTRUCTIONS, INSTRUCTION_LABELS } from '
 
 // SVG team score chart: shows our team total vs opponent per round
 function TeamScoreChart({ roundTotals }: {
-  roundTotals: { round: number; our: number; opponent: number }[];
+  roundTotals: { round: number; our: number; opponent: number; hasData: boolean }[];
 }) {
-  const validRounds = roundTotals.filter(r => r.our > 0);
+  const validRounds = roundTotals.filter(r => r.hasData);
   if (validRounds.length === 0) return null;
 
   const W = 700, H = 220, PAD_L = 50, PAD_R = 20, PAD_T = 20, PAD_B = 30;
   const maxVal = 160;
 
-  const pointsOur = validRounds.map((r, i) => {
-    const x = PAD_L + (i * (W - PAD_L - PAD_R)) / Math.max(validRounds.length - 1, 1);
+  // Build a stable key from data to force SVG re-render on any change
+  const dataKey = validRounds.map(r => `${r.round}:${r.our}`).join('|');
+
+  const pointsOur = validRounds.map((r, idx) => {
+    const x = PAD_L + (idx * (W - PAD_L - PAD_R)) / Math.max(validRounds.length - 1, 1);
     const y = H - PAD_B - (r.our / maxVal) * (H - PAD_T - PAD_B);
     return { x, y, round: r.round, val: r.our };
   });
-  const pointsOpp = validRounds.map((r, i) => {
-    const x = PAD_L + (i * (W - PAD_L - PAD_R)) / Math.max(validRounds.length - 1, 1);
+  const pointsOpp = validRounds.map((r, idx) => {
+    const x = PAD_L + (idx * (W - PAD_L - PAD_R)) / Math.max(validRounds.length - 1, 1);
     const y = H - PAD_B - (r.opponent / maxVal) * (H - PAD_T - PAD_B);
     return { x, y, round: r.round, val: r.opponent };
   });
 
-  const lineOur = pointsOur.map((p, i) => `${i === 0 ? 'M' : 'L'} ${Math.round(p.x)} ${Math.round(p.y)}`).join(' ');
-  const lineOpp = pointsOpp.map((p, i) => `${i === 0 ? 'M' : 'L'} ${Math.round(p.x)} ${Math.round(p.y)}`).join(' ');
+  const lineOur = pointsOur.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${Math.round(p.x)} ${Math.round(p.y)}`).join(' ');
+  const lineOpp = pointsOpp.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${Math.round(p.x)} ${Math.round(p.y)}`).join(' ');
 
   return (
-    <svg className="team-score-chart" viewBox={`0 0 ${W} ${H}`} width="100%" height={H}>
+    <svg key={dataKey} className="team-score-chart" viewBox={`0 0 ${W} ${H}`} width="100%" height={H}>
       {/* Grid */}
       {[0, 40, 80, 120, 160].map(v => {
         const y = Math.round(H - PAD_B - (v / maxVal) * (H - PAD_T - PAD_B));
@@ -45,22 +48,22 @@ function TeamScoreChart({ roundTotals }: {
       <path d={lineOpp} fill="none" stroke="#ff6b6b" strokeWidth="2.5" strokeLinejoin="round" strokeDasharray="6,3" />
 
       {/* Dots and labels */}
-      {pointsOur.map((p, i) => (
-        <g key={`our-${i}`}>
+      {pointsOur.map((p, idx) => (
+        <g key={`our-${idx}-${p.val}`}>
           <circle cx={Math.round(p.x)} cy={Math.round(p.y)} r="4" fill="#e0d060" stroke="#111" strokeWidth="1" />
           <text x={Math.round(p.x)} y={Math.round(p.y) - 8} fill="#e0d060" fontSize="9" textAnchor="middle">{p.val}</text>
         </g>
       ))}
-      {pointsOpp.map((p, i) => (
-        <g key={`opp-${i}`}>
+      {pointsOpp.map((p, idx) => (
+        <g key={`opp-${idx}-${p.val}`}>
           <circle cx={Math.round(p.x)} cy={Math.round(p.y)} r="4" fill="#ff6b6b" stroke="#111" strokeWidth="1" />
           <text x={Math.round(p.x)} y={Math.round(p.y) + 16} fill="#ff6b6b" fontSize="9" textAnchor="middle">{p.val}</text>
         </g>
       ))}
 
       {/* Round labels */}
-      {validRounds.map((r, i) => {
-        const x = PAD_L + (i * (W - PAD_L - PAD_R)) / Math.max(validRounds.length - 1, 1);
+      {validRounds.map((r, idx) => {
+        const x = PAD_L + (idx * (W - PAD_L - PAD_R)) / Math.max(validRounds.length - 1, 1);
         return (
           <text key={r.round} x={Math.round(x)} y={H - 6} fill="#555" fontSize="10" textAnchor="middle">R{r.round}</text>
         );
@@ -160,11 +163,13 @@ export function MasterView() {
   const ourTotal = players.reduce((sum, p) => sum + p.estimatedScore, 0);
   const opponentTotal = Math.max(0, 160 - ourTotal);
   const roundTeamTotals = [1, 2, 3, 4, 5].map(round => {
+    let hasData = false;
     const roundTotal = players.reduce((sum, p) => {
       const rd = (p.roundHistory || []).find(r => r.round === round);
+      if (rd) hasData = true;
       return sum + (rd ? rd.score : 0);
     }, 0);
-    return { round, our: roundTotal, opponent: Math.max(0, 160 - roundTotal) };
+    return { round, our: roundTotal, opponent: Math.max(0, 160 - roundTotal), hasData };
   });
 
   return (
@@ -192,7 +197,7 @@ export function MasterView() {
             <span className="team-value">{opponentTotal}</span>
           </div>
         </div>
-        {roundTeamTotals.some(r => r.our > 0) && (
+        {roundTeamTotals.some(r => r.hasData) && (
           <div className="team-chart-wrap">
             <h3>每回合走勢</h3>
             <TeamScoreChart
