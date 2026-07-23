@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, update, onValue, push, remove, serverTimestamp, get, child } from 'firebase/database';
+import { getDatabase, ref, set, update, onValue, remove, serverTimestamp, get, child } from 'firebase/database';
 import type { BattleRoom, PlayerReport, MasterInstruction } from './types';
 
 const firebaseConfig = {
@@ -42,16 +42,15 @@ export async function joinRoom(
   playerKey: string,
   playerName: string
 ): Promise<string> {
-  const playersRef = ref(db, `battles/${code}/players`);
-  const newPlayerRef = push(playersRef);
-  await set(newPlayerRef, {
+  const playerRef = ref(db, `battles/${code}/players/${playerKey}`);
+  await set(playerRef, {
     playerKey,
     playerName,
     round: 1,
     estimatedScore: 0,
     status: 'draw',
   });
-  return newPlayerRef.key!;
+  return playerKey;
 }
 
 export async function updatePlayerReport(
