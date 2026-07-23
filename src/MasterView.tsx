@@ -6,7 +6,7 @@ import { STATUS_LABELS, STATUS_COLORS, INSTRUCTIONS, INSTRUCTION_LABELS } from '
 function ScoreHistoryChart({ history }: { history: RoundData[] }) {
   if (!history || history.length === 0) return null;
 
-  const W = 240, H = 50, PAD = 20;
+  const W = 240, H = 80, PAD = 20;
   const maxScore = 20;
 
   // Build round lookup
