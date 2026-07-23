@@ -1,5 +1,5 @@
 import { useBattle } from './BattleContext';
-import type { PlayerReport, RoundData } from './types';
+import type { PlayerReport, RoundData, PlayerStatus } from './types';
 import { STATUS_LABELS, STATUS_COLORS, INSTRUCTIONS, INSTRUCTION_LABELS } from './types';
 
 // SVG team score chart: shows our team total vs opponent per round
@@ -80,15 +80,26 @@ function TeamScoreChart({ roundTotals }: {
 }
 
 // SVG sparkline: round 1-5 score tracking
-function ScoreHistoryChart({ history }: { history: RoundData[] }) {
-  if (!history || history.length === 0) return null;
+function ScoreHistoryChart({ history, currentRound, currentScore, currentStatus }: {
+  history: RoundData[];
+  currentRound?: number;
+  currentScore?: number;
+  currentStatus?: PlayerStatus;
+}) {
+  // Build effective history: use roundHistory if available, else fall back to current round
+  let effectiveHistory = history && history.length > 0 ? history : null;
+  if (!effectiveHistory && currentRound && currentScore !== undefined && currentScore > 0) {
+    const status: PlayerStatus = currentStatus || 'draw';
+    effectiveHistory = [{ round: currentRound, score: currentScore, status }];
+  }
+  if (!effectiveHistory || effectiveHistory.length === 0) return null;
 
   const W = 240, H = 160, PAD = 20;
   const maxScore = 20;
 
   // Build round lookup
   const roundMap: Record<number, RoundData> = {};
-  history.forEach((h) => { roundMap[h.round] = h; });
+  effectiveHistory.forEach((h) => { roundMap[h.round] = h; });
 
   // Points for rounds 1-5
   const allRounds = [1, 2, 3, 4, 5];
@@ -266,11 +277,16 @@ export function MasterView() {
                   </div>
 
                   {/* Score history chart */}
-                  {history.length > 0 && (
+                  {history.length > 0 || p.estimatedScore > 0 ? (
                     <div className="card-chart">
-                      <ScoreHistoryChart history={history} />
+                      <ScoreHistoryChart
+                        history={history}
+                        currentRound={p.round}
+                        currentScore={p.estimatedScore}
+                        currentStatus={p.status}
+                      />
                     </div>
-                  )}
+                  ) : null}
                 </div>
               );
             })}
