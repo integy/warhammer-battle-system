@@ -19,6 +19,7 @@ interface BattleContextType {
   players: PlayerInfo[];
   room: BattleRoom | null;
   createBattle: () => Promise<string>;
+  joinAsMaster: (code: string) => Promise<void>;
   joinBattle: (code: string, playerKey: string) => Promise<void>;
   selectPlayer: (playerKey: string) => void;
   reportScore: (score: number) => void;
@@ -60,6 +61,11 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
     setRoomCode(code);
     setRole('master');
     return code;
+  }, []);
+
+  const joinAsMaster = useCallback(async (code: string) => {
+    setRoomCode(code);
+    setRole('master');
   }, []);
 
   const selectPlayer = useCallback((playerKey: string) => {
@@ -110,7 +116,7 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
   return (
     <BattleContext.Provider value={{
       role, roomCode, firebaseKey, selectedPlayer, players, room,
-      createBattle, joinBattle, selectPlayer,
+      createBattle, joinAsMaster, joinBattle, selectPlayer,
       reportScore, reportStatus, reportRound, sendInstruction, leaveBattle,
     }}>
       {children}

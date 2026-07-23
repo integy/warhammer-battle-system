@@ -3,8 +3,9 @@ import { useBattle } from './BattleContext';
 import { roomExists } from './firebase';
 
 export function BattleLobby() {
-  const { createBattle, joinBattle, players, selectPlayer, selectedPlayer } = useBattle();
+  const { createBattle, joinAsMaster, joinBattle, players, selectPlayer, selectedPlayer } = useBattle();
   const [joinCode, setJoinCode] = useState('');
+  const [masterCode, setMasterCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -15,6 +16,27 @@ export function BattleLobby() {
       await createBattle();
     } catch (e: any) {
       setError(e.message || 'Failed to create room');
+    }
+    setLoading(false);
+  };
+
+  const handleJoinAsMaster = async () => {
+    if (!masterCode.trim() || masterCode.length !== 4) {
+      setError('Please enter a 4-digit room code');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      const exists = await roomExists(masterCode);
+      if (!exists) {
+        setError('Room not found. Check the code and try again.');
+        setLoading(false);
+        return;
+      }
+      await joinAsMaster(masterCode);
+    } catch (e: any) {
+      setError(e.message || 'Failed to join room');
     }
     setLoading(false);
   };
@@ -54,6 +76,24 @@ export function BattleLobby() {
           {loading ? 'Creating...' : 'Create New Room'}
         </button>
         <p className="hint">Creates a 4-digit code to share with players.</p>
+      </div>
+
+      <div className="lobby-divider"><span>or</span></div>
+
+      <div className="lobby-section">
+        <h3>Join as Master</h3>
+        <input
+          type="text"
+          className="input"
+          placeholder="Room code (4 digits)"
+          value={masterCode}
+          onChange={(e) => setMasterCode(e.target.value.replace(/\D/g, '').slice(0, 4))}
+          maxLength={4}
+        />
+        <button className="btn primary" onClick={handleJoinAsMaster} disabled={loading}>
+          {loading ? 'Joining...' : 'Access Room'}
+        </button>
+        <p className="hint">Rejoin an existing room to view previous data.</p>
       </div>
 
       <div className="lobby-divider"><span>or</span></div>
