@@ -5,24 +5,12 @@ import { STATUS_LABELS, STATUS_COLORS, INSTRUCTIONS, INSTRUCTION_LABELS } from '
 export function MasterView() {
   const { roomCode, room, sendInstruction, leaveBattle } = useBattle();
 
-  // Dedup: group by (playerName, round), keep newest (higher Firebase key = later)
+  // Build player list sorted by name then round. No duplicates possible (playerKey = Firebase key).
   const players: (PlayerReport & { firebaseKey: string })[] = (() => {
     if (!room) return [];
     const entries = Object.entries(room.players).map(([key, p]) => ({ ...p, firebaseKey: key }));
-    // Sort by firebaseKey descending (newest first)
-    entries.sort((a, b) => b.firebaseKey.localeCompare(a.firebaseKey));
-    const seen = new Set<string>();
-    const deduped: (PlayerReport & { firebaseKey: string })[] = [];
-    for (const p of entries) {
-      const groupKey = `${p.playerName}|${p.round}`;
-      if (!seen.has(groupKey)) {
-        seen.add(groupKey);
-        deduped.push(p);
-      }
-    }
-    // Sort back by player name then round for display
-    deduped.sort((a, b) => a.playerName.localeCompare(b.playerName) || a.round - b.round);
-    return deduped;
+    entries.sort((a, b) => a.playerName.localeCompare(b.playerName) || a.round - b.round);
+    return entries;
   })();
 
   const currentInstruction = room?.masterInstruction ?? null;
