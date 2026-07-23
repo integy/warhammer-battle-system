@@ -5,7 +5,7 @@ import { STATUSES, STATUS_LABELS, INSTRUCTIONS, INSTRUCTION_LABELS } from './typ
 export function PlayerView() {
   const {
     roomCode, selectedPlayer, reportScore, reportStatus,
-    leaveBattle, room,
+    reportRound, leaveBattle, room,
   } = useBattle();
 
   const myData = room && selectedPlayer
@@ -14,6 +14,7 @@ export function PlayerView() {
 
   const currentScore = myData?.estimatedScore ?? 0;
   const currentStatus: PlayerStatus = myData?.status ?? 'draw';
+  const currentRound = myData?.round ?? 1;
   const masterInstruction = room?.masterInstruction ?? null;
 
   const scoreRows: number[][] = [];
@@ -27,6 +28,21 @@ export function PlayerView() {
         <span className="badge room">Room: {roomCode}</span>
         <span className="badge player">Player: {selectedPlayer?.name}</span>
         <button className="btn btn-sm" onClick={leaveBattle}>Leave</button>
+      </div>
+
+      <div className="section">
+        <h3>Round</h3>
+        <div className="round-grid">
+          {[1, 2, 3, 4, 5].map((r) => (
+            <button
+              key={r}
+              className={`round-btn ${currentRound === r ? 'active' : ''}`}
+              onClick={() => reportRound(r)}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="section">
@@ -75,8 +91,10 @@ export function PlayerView() {
               key={inst}
               className={`instruction-item ${masterInstruction === inst ? 'active' : ''}`}
             >
-              <span>{INSTRUCTION_LABELS[inst]}</span>
-              {masterInstruction === inst && <span className="mark">!</span>}
+              <span>
+                {INSTRUCTION_LABELS[inst]}
+                {masterInstruction === inst && '!'}
+              </span>
             </div>
           ))}
         </div>

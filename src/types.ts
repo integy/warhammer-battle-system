@@ -12,6 +12,14 @@ export const STATUS_LABELS: Record<PlayerStatus, string> = {
   lost: 'Lost',
 };
 
+export const STATUS_COLORS: Record<PlayerStatus, string> = {
+  doing_well: '#4caf50',
+  good: '#2196f3',
+  draw: '#ffc107',
+  losing: '#ff9800',
+  lost: '#f44336',
+};
+
 export const INSTRUCTIONS: MasterInstruction[] = [
   'pushing_hard',
   'push',
@@ -34,6 +42,7 @@ export interface PlayerInfo {
 export interface PlayerReport {
   playerKey: string;
   playerName: string;
+  round: number;
   estimatedScore: number;
   status: PlayerStatus;
 }

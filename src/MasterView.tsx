@@ -1,6 +1,6 @@
 import { useBattle } from './BattleContext';
 import type { PlayerReport } from './types';
-import { STATUS_LABELS, INSTRUCTIONS, INSTRUCTION_LABELS } from './types';
+import { STATUS_LABELS, STATUS_COLORS, INSTRUCTIONS, INSTRUCTION_LABELS } from './types';
 
 export function MasterView() {
   const { roomCode, room, sendInstruction, leaveBattle } = useBattle();
@@ -13,12 +13,17 @@ export function MasterView() {
 
   return (
     <div className="battle-view master-view">
-      <div className="battle-header">
-        <span className="badge room">Room: {roomCode}</span>
+      {/* Big Room Header */}
+      <div className="master-header">
+        <div className="room-display">
+          <span className="room-label">ROOM</span>
+          <span className="room-number">{roomCode}</span>
+        </div>
         <span className="badge master">Master</span>
         <button className="btn btn-sm" onClick={leaveBattle}>End Session</button>
       </div>
 
+      {/* Instruction Controls */}
       <div className="section">
         <h3>Send Instruction</h3>
         <div className="instruction-grid">
@@ -29,32 +34,54 @@ export function MasterView() {
               onClick={() => sendInstruction(inst)}
             >
               {INSTRUCTION_LABELS[inst]}
-              {currentInstruction === inst && <span className="mark">!</span>}
+              {currentInstruction === inst && '!'}
             </button>
           ))}
         </div>
       </div>
 
+      {/* Battlefield Overview */}
       <div className="section">
-        <h3>Players ({players.length})</h3>
+        <h3>Battlefield ({players.length} players)</h3>
         {players.length === 0 ? (
           <p className="empty-state">Waiting for players to join...</p>
         ) : (
-          <div className="players-table">
-            <div className="players-header">
-              <span>Player</span>
-              <span>Score</span>
-              <span>Status</span>
-            </div>
-            {players.map((p) => (
-              <div key={p.firebaseKey} className="players-row">
-                <span className="player-name">{p.playerName}</span>
-                <span className="player-score">{p.estimatedScore}/20</span>
-                <span className={`player-status ${p.status}`}>
-                  {STATUS_LABELS[p.status]}
-                </span>
-              </div>
-            ))}
+          <div className="battlefield">
+            {players.map((p) => {
+              const pct = Math.round((p.estimatedScore / 20) * 100);
+              const statusColor = STATUS_COLORS[p.status];
+              return (
+                <div key={p.firebaseKey} className="player-card">
+                  <div className="card-top">
+                    <span className="card-name">{p.playerName}</span>
+                    <span className="card-round">R{p.round}</span>
+                  </div>
+
+                  {/* Score bar */}
+                  <div className="card-score">
+                    <span className="card-score-num">{p.estimatedScore}</span>
+                    <span className="card-score-max">/20</span>
+                  </div>
+                  <div className="score-bar-track">
+                    <div
+                      className="score-bar-fill"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+
+                  {/* Status dot */}
+                  <div className="card-status">
+                    <span
+                      className="status-dot"
+                      style={{ background: statusColor }}
+                    />
+                    <span style={{ color: statusColor }}>
+                      {STATUS_LABELS[p.status]}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

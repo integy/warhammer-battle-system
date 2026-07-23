@@ -47,6 +47,7 @@ export async function joinRoom(
   await set(newPlayerRef, {
     playerKey,
     playerName,
+    round: 1,
     estimatedScore: 0,
     status: 'draw',
   });
@@ -56,7 +57,7 @@ export async function joinRoom(
 export async function updatePlayerReport(
   code: string,
   firebaseKey: string,
-  data: Partial<Pick<PlayerReport, 'estimatedScore' | 'status'>>
+  data: Partial<Pick<PlayerReport, 'round' | 'estimatedScore' | 'status'>>
 ): Promise<void> {
   await update(ref(db, `battles/${code}/players/${firebaseKey}`), data as Record<string, unknown>);
 }

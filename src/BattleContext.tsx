@@ -23,6 +23,7 @@ interface BattleContextType {
   selectPlayer: (playerKey: string) => void;
   reportScore: (score: number) => void;
   reportStatus: (status: string) => void;
+  reportRound: (round: number) => void;
   sendInstruction: (instruction: MasterInstruction) => void;
   leaveBattle: () => void;
 }
@@ -86,6 +87,11 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
     fbUpdateReport(roomCode, firebaseKey, { status: status as any });
   }, [roomCode, firebaseKey]);
 
+  const reportRound = useCallback((round: number) => {
+    if (!roomCode || !firebaseKey) return;
+    fbUpdateReport(roomCode, firebaseKey, { round });
+  }, [roomCode, firebaseKey]);
+
   const sendInstruction = useCallback((instruction: MasterInstruction) => {
     if (!roomCode) return;
     fbSetInstruction(roomCode, instruction);
@@ -105,7 +111,7 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
     <BattleContext.Provider value={{
       role, roomCode, firebaseKey, selectedPlayer, players, room,
       createBattle, joinBattle, selectPlayer,
-      reportScore, reportStatus, sendInstruction, leaveBattle,
+      reportScore, reportStatus, reportRound, sendInstruction, leaveBattle,
     }}>
       {children}
     </BattleContext.Provider>
