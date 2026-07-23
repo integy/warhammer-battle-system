@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useBattle } from './BattleContext';
 import type { PlayerStatus } from './types';
 import { STATUSES, STATUS_LABELS, INSTRUCTIONS, INSTRUCTION_LABELS } from './types';
@@ -8,14 +9,27 @@ export function PlayerView() {
     reportRound, leaveBattle, room,
   } = useBattle();
 
-  const myData = room && selectedPlayer
-    ? Object.values(room.players).find(p => p.playerKey === selectedPlayer.key)
-    : null;
+  // Local state — only sent to Firebase on CONFIRM
+  const [score, setScore] = useState(0);
+  const [status, setStatus] = useState<PlayerStatus>('draw');
+  const [round, setRound] = useState(1);
+  const [confirmed, setConfirmed] = useState(false);
 
-  const currentScore = myData?.estimatedScore ?? 0;
-  const currentStatus: PlayerStatus = myData?.status ?? 'draw';
-  const currentRound = myData?.round ?? 1;
   const masterInstruction = room?.masterInstruction ?? null;
+
+  const handleConfirm = () => {
+    reportRound(round);
+    reportScore(score);
+    reportStatus(status);
+    setConfirmed(true);
+    // Reset after 1.5s
+    setTimeout(() => {
+      setScore(0);
+      setStatus('draw');
+      setRound(1);
+      setConfirmed(false);
+    }, 1500);
+  };
 
   const scoreRows: number[][] = [];
   for (let i = 0; i < 21; i += 7) {
@@ -30,14 +44,19 @@ export function PlayerView() {
         <button className="btn btn-sm" onClick={leaveBattle}>Leave</button>
       </div>
 
+      {confirmed && (
+        <div className="confirm-flash">✓ Submitted!</div>
+      )}
+
       <div className="section">
         <h3>Round</h3>
         <div className="round-grid">
           {[1, 2, 3, 4, 5].map((r) => (
             <button
               key={r}
-              className={`round-btn ${currentRound === r ? 'active' : ''}`}
-              onClick={() => reportRound(r)}
+              className={`round-btn ${round === r ? 'active' : ''}`}
+              onClick={() => setRound(r)}
+              disabled={confirmed}
             >
               {r}
             </button>
@@ -48,7 +67,7 @@ export function PlayerView() {
       <div className="section">
         <h3>Estimated Score</h3>
         <div className="score-display">
-          <span className="score-number">{currentScore}</span>
+          <span className="score-number">{score}</span>
           <span className="score-label">/ 20</span>
         </div>
         <div className="score-grid">
@@ -57,8 +76,9 @@ export function PlayerView() {
               {row.map((n) => (
                 <button
                   key={n}
-                  className={`score-btn ${currentScore === n ? 'active' : ''}`}
-                  onClick={() => reportScore(n)}
+                  className={`score-btn ${score === n ? 'active' : ''}`}
+                  onClick={() => setScore(n)}
+                  disabled={confirmed}
                 >
                   {n}
                 </button>
@@ -74,14 +94,24 @@ export function PlayerView() {
           {STATUSES.map((s) => (
             <button
               key={s}
-              className={`status-btn ${s} ${currentStatus === s ? 'active' : ''}`}
-              onClick={() => reportStatus(s)}
+              className={`status-btn ${s} ${status === s ? 'active' : ''}`}
+              onClick={() => setStatus(s)}
+              disabled={confirmed}
             >
               {STATUS_LABELS[s]}
             </button>
           ))}
         </div>
       </div>
+
+      {/* CONFIRM button */}
+      <button
+        className="btn confirm-btn"
+        onClick={handleConfirm}
+        disabled={confirmed}
+      >
+        {confirmed ? 'Sent ✓' : '⏎ CONFIRM'}
+      </button>
 
       <div className="section">
         <h3>📋 Master Instructions</h3>

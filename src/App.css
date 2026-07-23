@@ -449,3 +449,49 @@ body {
 .hint { color: #555; font-size: 13px; margin-top: 8px; }
 .error { color: #f44336; padding: 10px; background: #2a1414; border-radius: 6px; margin-top: 12px; font-size: 14px; }
 .empty-state { color: #555; text-align: center; padding: 28px; font-style: italic; }
+
+/* Confirm button */
+.confirm-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  margin: 20px 0 24px;
+  background: #1a3a2a;
+  border: 2px solid #4caf50;
+  color: #4caf50;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 2px;
+}
+
+.confirm-btn:hover {
+  background: #1a4a2a;
+  border-color: #6bff8a;
+  color: #6bff8a;
+}
+
+.confirm-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.confirm-flash {
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 16px;
+  background: #0d2d0d;
+  border: 1px solid #4caf50;
+  border-radius: 6px;
+  color: #6bff8a;
+  font-size: 18px;
+  font-weight: 600;
+  animation: flashIn 0.3s ease;
+}
+
+@keyframes flashIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
