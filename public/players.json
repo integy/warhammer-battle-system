@@ -1,0 +1,12 @@
+{
+  "players": [
+    { "key": "eric", "name": "Eric" },
+    { "key": "ming", "name": "Ming" },
+    { "key": "ken",  "name": "Ken" },
+    { "key": "ivan", "name": "Ivan" },
+    { "key": "p5",   "name": "Player 5" },
+    { "key": "p6",   "name": "Player 6" },
+    { "key": "p7",   "name": "Player 7" },
+    { "key": "p8",   "name": "Player 8" }
+  ]
+}
