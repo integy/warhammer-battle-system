@@ -4,7 +4,7 @@ let cachedPlayers: PlayerInfo[] | null = null;
 
 export async function loadPlayers(): Promise<PlayerInfo[]> {
   if (cachedPlayers) return cachedPlayers as PlayerInfo[];
-  const res = await fetch('/players.json');
+  const res = await fetch(`${import.meta.env.BASE_URL}players.json`);
   if (!res.ok) throw new Error('Failed to load player list');
   const data = await res.json();
   cachedPlayers = data.players;
