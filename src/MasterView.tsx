@@ -30,7 +30,7 @@ function TeamScoreChart({ roundTotals }: {
   const lineOpp = pointsOpp.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${Math.round(p.x)} ${Math.round(p.y)}`).join(' ');
 
   return (
-    <svg key={dataKey} className="team-score-chart" viewBox={`0 0 ${W} ${H}`} width="100%" height={H}>
+    <svg key={dataKey} className="team-score-chart" viewBox={`0 0 ${W} ${H}`} width="100%" height={H} preserveAspectRatio="xMidYMid meet">
       {/* Grid */}
       {[0, 40, 80, 120, 160].map(v => {
         const y = Math.round(H - PAD_B - (v / maxVal) * (H - PAD_T - PAD_B));
@@ -118,7 +118,7 @@ function ScoreHistoryChart({ history, currentRound, currentScore, currentStatus 
   const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
 
   return (
-    <svg className="score-chart" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
+    <svg className="score-chart" viewBox={`0 0 ${W} ${H}`} width="100%" height={H} preserveAspectRatio="xMidYMid meet">
       {/* Grid lines */}
       {[0, 10, 20].map((v) => {
         const y = H - PAD - (v / maxScore) * (H - 2 * PAD);

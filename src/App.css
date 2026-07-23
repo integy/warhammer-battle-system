@@ -5,38 +5,39 @@ body {
   background: #0d0d1a;
   color: #ccc;
   min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .app {
-  max-width: 700px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 12px;
 }
 
 /* === Battle Lobby === */
 .battle-lobby {
-  padding: 32px 16px;
+  padding: 24px 8px;
   text-align: center;
 }
 
 .battle-lobby h2 {
-  font-size: 22px;
+  font-size: 20px;
   color: #e0d060;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .lobby-section {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .lobby-section h3 {
-  font-size: 16px;
-  margin-bottom: 12px;
+  font-size: 14px;
+  margin-bottom: 10px;
   color: #888;
 }
 
 .lobby-divider {
-  margin: 24px 0;
+  margin: 20px 0;
   color: #444;
   position: relative;
 }
@@ -64,18 +65,18 @@ body {
   font-size: 13px;
   color: #888;
   margin-bottom: 4px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .input, .select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   background: #1a1a2e;
   border: 1px solid #333;
   border-radius: 6px;
   color: #ddd;
-  font-size: 15px;
-  margin-bottom: 12px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .input:focus, .select:focus {
@@ -93,7 +94,7 @@ body {
 
 /* === Buttons === */
 .btn {
-  padding: 8px 20px;
+  padding: 10px 20px;
   border-radius: 6px;
   border: 1px solid #333;
   cursor: pointer;
@@ -101,6 +102,7 @@ body {
   background: #1a1a2e;
   color: #ccc;
   transition: border-color 0.2s;
+  min-height: 44px;
 }
 
 .btn:hover { border-color: #666; }
@@ -111,25 +113,25 @@ body {
   color: #e0d060;
   font-weight: 600;
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   font-size: 16px;
 }
 
 .btn.primary:hover { background: #3d3d54; }
 
-.btn-sm { padding: 4px 12px; font-size: 12px; }
+.btn-sm { padding: 6px 14px; font-size: 12px; min-height: 36px; }
 
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* === Battle View (shared) === */
-.battle-view { padding: 8px 0; }
+.battle-view { padding: 4px 0; }
 
 .battle-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 14px;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
   border-bottom: 1px solid #222;
   flex-wrap: wrap;
 }
@@ -137,7 +139,7 @@ body {
 .badge {
   padding: 4px 10px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -147,57 +149,58 @@ body {
 
 /* === Sections === */
 .section {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .section h3 {
-  font-size: 15px;
+  font-size: 14px;
   color: #777;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* === Score Display === */
+/* === Score Display (Player) === */
 .score-display {
   text-align: center;
-  margin: 8px 0 16px;
+  margin: 6px 0 14px;
 }
 
 .score-number {
-  font-size: 56px;
+  font-size: 48px;
   color: #e0d060;
   font-weight: 800;
 }
 
 .score-label {
-  font-size: 22px;
+  font-size: 20px;
   color: #555;
 }
 
 .score-grid {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .score-row {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   justify-content: center;
 }
 
 .score-btn {
-  width: 44px;
-  height: 40px;
+  width: 40px;
+  height: 38px;
   background: #1a1a2e;
   border: 1px solid #333;
   color: #aaa;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .score-btn:hover { border-color: #666; color: #ddd; }
@@ -212,7 +215,7 @@ body {
 /* === Round Buttons === */
 .round-grid {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .round-btn {
@@ -226,6 +229,8 @@ body {
   font-size: 18px;
   font-weight: 700;
   transition: all 0.15s;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .round-btn:hover { border-color: #666; color: #ddd; }
@@ -239,22 +244,24 @@ body {
 /* === Status Buttons === */
 .status-grid {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .status-btn {
   flex: 1;
-  min-width: 90px;
-  padding: 12px 8px;
+  min-width: 80px;
+  padding: 10px 6px;
   background: #1a1a2e;
   border: 2px solid #333;
   color: #ccc;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
+  min-height: 44px;
   transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .status-btn:hover { border-color: #555; }
@@ -269,19 +276,21 @@ body {
 .instruction-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 6px;
 }
 
 .instruction-btn {
-  padding: 14px 10px;
+  padding: 12px 8px;
   background: #1a1a2e;
   border: 2px solid #333;
   color: #ccc;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
+  min-height: 44px;
   transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .instruction-btn:hover { border-color: #666; }
@@ -296,18 +305,18 @@ body {
 .instructions-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .instruction-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: 12px 14px;
   background: #1a1a2e;
   border: 1px solid #333;
   border-radius: 6px;
-  font-size: 15px;
+  font-size: 14px;
   transition: all 0.2s;
 }
 
@@ -319,8 +328,8 @@ body {
 
 /* === Team Score Summary === */
 .team-summary {
-  margin-bottom: 24px;
-  padding: 18px 20px;
+  margin-bottom: 20px;
+  padding: 14px 12px;
   background: #0d0d1a;
   border: 1px solid #222;
   border-radius: 10px;
@@ -330,13 +339,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
 }
 
 .team-score {
   text-align: center;
-  padding: 12px 28px;
+  padding: 10px 20px;
   border-radius: 8px;
 }
 
@@ -352,7 +362,7 @@ body {
 
 .team-label {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   color: #888;
   margin-bottom: 2px;
   text-transform: uppercase;
@@ -360,7 +370,7 @@ body {
 }
 
 .team-value {
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 900;
 }
 
@@ -368,21 +378,21 @@ body {
 .team-score.theirs .team-value { color: #ff6b6b; }
 
 .team-score-vs {
-  font-size: 14px;
+  font-size: 13px;
   color: #555;
   font-weight: 600;
 }
 
 .team-chart-wrap {
-  margin-top: 14px;
-  padding-top: 14px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px solid #1a1a2e;
 }
 
 .team-chart-wrap h3 {
-  font-size: 13px !important;
+  font-size: 12px !important;
   color: #666 !important;
-  margin-bottom: 10px !important;
+  margin-bottom: 8px !important;
 }
 
 .team-score-chart {
@@ -397,9 +407,9 @@ body {
 .master-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
   border-bottom: 1px solid #222;
   flex-wrap: wrap;
 }
@@ -411,18 +421,18 @@ body {
   background: #12122a;
   border: 1px solid #333;
   border-radius: 10px;
-  padding: 10px 28px;
+  padding: 8px 22px;
 }
 
 .room-label {
-  font-size: 11px;
+  font-size: 10px;
   color: #666;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .room-number {
-  font-size: 42px;
+  font-size: 34px;
   font-weight: 900;
   color: #e0d060;
   line-height: 1.1;
@@ -432,14 +442,14 @@ body {
 .battlefield {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .player-card {
   background: #111122;
   border: 1px solid #222;
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   transition: border-color 0.2s;
 }
 
@@ -451,20 +461,20 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .card-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #ddd;
 }
 
 .card-round {
-  font-size: 12px;
+  font-size: 11px;
   color: #888;
   background: #1a1a2e;
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
   font-weight: 600;
 }
@@ -474,25 +484,25 @@ body {
   display: flex;
   align-items: baseline;
   gap: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .card-score-num {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   color: #e0d060;
 }
 
 .card-score-max {
-  font-size: 13px;
+  font-size: 12px;
   color: #555;
 }
 
 .score-bar-track {
-  height: 6px;
+  height: 5px;
   background: #1a1a2e;
   border-radius: 3px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   overflow: hidden;
 }
 
@@ -507,22 +517,22 @@ body {
 .card-status {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 5px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .status-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 /* Score history chart (sparkline) */
 .card-chart {
-  margin-top: 12px;
-  padding-top: 10px;
+  margin-top: 10px;
+  padding-top: 8px;
   border-top: 1px solid #1a1a2e;
 }
 
@@ -530,17 +540,19 @@ body {
   display: block;
   width: 100%;
   height: auto;
+  max-width: 100%;
 }
+
 .hint { color: #555; font-size: 13px; margin-top: 8px; }
-.error { color: #f44336; padding: 10px; background: #2a1414; border-radius: 6px; margin-top: 12px; font-size: 14px; }
-.empty-state { color: #555; text-align: center; padding: 28px; font-style: italic; }
+.error { color: #f44336; padding: 10px; background: #2a1414; border-radius: 6px; margin-top: 10px; font-size: 14px; }
+.empty-state { color: #555; text-align: center; padding: 24px; font-style: italic; }
 
 /* Confirm button */
 .confirm-btn {
   display: block;
   width: 100%;
   padding: 16px;
-  margin: 20px 0 24px;
+  margin: 18px 0 22px;
   background: #1a3a2a;
   border: 2px solid #4caf50;
   color: #4caf50;
@@ -550,6 +562,8 @@ body {
   cursor: pointer;
   transition: all 0.15s;
   letter-spacing: 2px;
+  min-height: 56px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .confirm-btn:hover {
@@ -566,7 +580,7 @@ body {
 .confirm-flash {
   text-align: center;
   padding: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   background: #0d2d0d;
   border: 1px solid #4caf50;
   border-radius: 6px;
@@ -579,4 +593,124 @@ body {
 @keyframes flashIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================= */
+/* === RESPONSIVE BREAKPOINTS === */
+/* ============================================= */
+
+/* Tablet / Small Desktop (768px - 1024px) */
+@media (min-width: 768px) {
+  .app { padding: 16px 24px; }
+
+  .battle-lobby h2 { font-size: 24px; }
+  .battle-lobby { padding: 36px 16px; }
+
+  .battlefield { gap: 10px; }
+  .player-card { padding: 16px 18px; }
+
+  .card-name { font-size: 16px; }
+  .card-score-num { font-size: 20px; }
+  .score-number { font-size: 56px; }
+
+  .team-value { font-size: 36px; }
+  .team-scores { gap: 24px; }
+  .team-summary { padding: 18px 20px; }
+
+  .room-number { font-size: 42px; }
+  .room-display { padding: 10px 28px; }
+}
+
+/* Phone (< 480px) — stacked single-column layout */
+@media (max-width: 479px) {
+  .app { padding: 8px; }
+
+  .battle-lobby { padding: 16px 4px; }
+  .battle-lobby h2 { font-size: 18px; margin-bottom: 20px; }
+
+  /* Single-column battlefield */
+  .battlefield {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .player-card { padding: 10px 12px; }
+
+  /* Make cards wider — full card content in one row */
+  .card-top {
+    margin-bottom: 4px;
+  }
+  .card-name { font-size: 14px; }
+
+  /* Score buttons tighter */
+  .score-btn {
+    width: 36px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .score-row { gap: 4px; }
+  .score-grid { gap: 4px; }
+
+  /* Team scores stacked */
+  .team-scores {
+    gap: 8px;
+  }
+
+  .team-score {
+    padding: 8px 14px;
+  }
+
+  .team-value { font-size: 26px; }
+
+  .team-summary { padding: 10px 8px; }
+
+  /* Smaller room number */
+  .room-number { font-size: 28px; }
+  .room-display { padding: 6px 16px; }
+  .master-header { gap: 6px; margin-bottom: 14px; }
+
+  /* Status buttons: 3+2 layout */
+  .status-btn {
+    min-width: 0;
+    font-size: 12px;
+    padding: 10px 4px;
+  }
+
+  /* Instruction grid stays 2-col */
+  .instruction-btn { font-size: 12px; padding: 10px 6px; }
+
+  /* Smaller section spacing */
+  .section { margin-bottom: 18px; }
+  .section h3 { font-size: 13px; }
+
+  /* Score display smaller */
+  .score-number { font-size: 40px; }
+  .score-label { font-size: 18px; }
+
+  /* Confirm button */
+  .confirm-btn { font-size: 18px; padding: 14px; margin: 14px 0 18px; }
+
+  /* Rounds */
+  .round-btn { font-size: 16px; padding: 8px; }
+}
+
+/* Small phones (< 360px) — extra tight */
+@media (max-width: 359px) {
+  .score-btn {
+    width: 32px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .status-btn { font-size: 11px; padding: 8px 2px; }
+  .instruction-btn { font-size: 11px; padding: 8px 4px; }
+
+  .team-score { padding: 6px 10px; }
+  .team-value { font-size: 22px; }
+  .team-label { font-size: 10px; }
+
+  .room-number { font-size: 24px; }
+
+  .battle-lobby h2 { font-size: 16px; }
 }
