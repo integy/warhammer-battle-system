@@ -43,14 +43,23 @@ export async function joinRoom(
   playerName: string
 ): Promise<string> {
   const playerRef = ref(db, `battles/${code}/players/${playerKey}`);
-  await set(playerRef, {
-    playerKey,
-    playerName,
-    round: 1,
-    estimatedScore: 0,
-    status: 'draw',
-    roundHistory: [],
-  });
+
+  // Check if player already exists (e.g. re-joining after refresh)
+  const existing = await get(playerRef);
+  if (existing.exists()) {
+    // Re-join: only update the name, preserve all game data
+    await update(playerRef, { playerName });
+  } else {
+    // First join: initialize with defaults
+    await set(playerRef, {
+      playerKey,
+      playerName,
+      round: 1,
+      estimatedScore: 0,
+      status: 'draw',
+      roundHistory: [],
+    });
+  }
   return playerKey;
 }
 
