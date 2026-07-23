@@ -3,7 +3,6 @@ import type { BattleRoom, MasterInstruction, BattleRole, PlayerInfo } from './ty
 import {
   createRoom as fbCreateRoom,
   joinRoom as fbJoinRoom,
-  leaveRoom as fbLeaveRoom,
   submitPlayerReport as fbSubmitReport,
   setInstruction as fbSetInstruction,
   subscribeToRoom,
@@ -106,7 +105,6 @@ export function BattleProvider({ children }: { children: React.ReactNode }) {
   }, [roomCode]);
 
   const leaveBattle = useCallback(() => {
-    if (roomCode && firebaseKey) fbLeaveRoom(roomCode, firebaseKey);
     setRoomCode(null);
     setFirebaseKey(null);
     setRole(null);
